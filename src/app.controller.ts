@@ -1,17 +1,19 @@
 import { Controller, Get, UseGuards, Post, Request } from '@nestjs/common';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
-import { LocalAuthGuard } from './auth/local-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
+import { LocalAuthGuard } from './auth/guards/local-auth.guard';
 import { AppService } from './app.service';
 import { AuthService } from './auth/auth.service';
+import { UsersService } from './users/users.service';
+import { IUser } from './users/users.interface';
 
 @Controller()
 export class AppController {
-  constructor(private authService: AuthService, private readonly appService: AppService) {}
+  constructor(private authService: AuthService, private usersService: UsersService, private readonly appService: AppService) {}
 
   @UseGuards(JwtAuthGuard)
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  getHello(@Request() req): Promise<IUser | undefined> {
+    return this.usersService.findById(req.user.userId);
   }
 
   
