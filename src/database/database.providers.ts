@@ -7,10 +7,12 @@ export const databaseProviders = [
 	{
 		provide: DATABASE_CONNECTION,
 		useFactory: async () => await createConnection({
-			type: 'mongodb',
+			type: 'postgres',
 			host: DATABASE_CONFIG.HOST,
-      		port: DATABASE_CONFIG.PORT,
+			port: DATABASE_CONFIG.PORT,
 			database: DATABASE_CONFIG.DATABASE,
+			username: DATABASE_CONFIG.USERNAME,
+			password: DATABASE_CONFIG.PASSWORD,
 			entities: [User, Task],
 			logging: true,
 			synchronize: true,

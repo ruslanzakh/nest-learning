@@ -12,7 +12,7 @@ export class UsersService {
   ) {}
 
   async validateUser(username: string): Promise<User> {
-    return this.usersRepository.findOne({where: {username}});
+    return this.usersRepository.findOne({where: {username}, select: ['password']});
   }
 
   async findAll(): Promise<User[]> {

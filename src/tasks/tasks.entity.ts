@@ -1,16 +1,15 @@
 import {
 	Entity,
 	Column,
-	ObjectIdColumn,
-	ObjectID,
+	PrimaryGeneratedColumn,
 	ManyToOne,
 } from 'typeorm';
 import { User } from '../users/users.entity';
 
 @Entity()
 export class Task {
-	@ObjectIdColumn()
-	id: ObjectID;
+	@PrimaryGeneratedColumn('uuid')
+	id: string;
 
 	@Column('varchar')
 	title: string;
@@ -20,6 +19,9 @@ export class Task {
 
 	@Column()
 	checked: boolean;
+
+	@Column({ nullable: true })
+	userId: string;
 
 	@ManyToOne(type => User, user => user.tasks)
 	user: User;

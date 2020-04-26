@@ -18,7 +18,7 @@ export class TasksService {
 	) {}
 
 	async findAll(): Promise<Task[]> {
-		return this.tasksRepository.find({ relations: ["user"] });
+		return this.tasksRepository.find();
 	}
 
 	async create(createUserDto: CreateTaskDto, userId: string): Promise<Task> {
