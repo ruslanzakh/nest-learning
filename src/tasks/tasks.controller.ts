@@ -6,11 +6,13 @@ import {
 	UseGuards,
 	Request,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './tasks.entity';
 import { TasksService } from './tasks.service';
 
+@ApiTags('tasks')
 @Controller('tasks')
 export class TasksController {
 	constructor(private readonly tasksService: TasksService) {}
