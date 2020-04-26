@@ -1,24 +1,35 @@
-import { Entity, Column, PrimaryGeneratedColumn, ObjectIdColumn, ObjectID, BeforeInsert } from 'typeorm';
-import { UserDto } from './dto/user.dto';
+import { Entity, Column, ObjectIdColumn, ObjectID, BeforeInsert, OneToMany } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Task } from '../tasks/tasks.entity';
 
 @Entity()
 export class User {
 	@ObjectIdColumn()
-    id: ObjectID;
+    _id: ObjectID;
 
 	@Column('varchar', { unique: true })
 	username: string;
 
-	@Column('varchar')
+	@Column({ select: false })
 	password: string;
 
-	@Column()
+	@Column({default: false})
 	admin: boolean;
+
+	@OneToMany(type => Task, task => task.user)
+    tasks: Task[];
 
 	@BeforeInsert()
 	async hashPassword() {
 		this.password = await User.setHashPassword(this.password);
+	}
+
+	toJSON() {
+		return {
+			username: this.username,
+			id: this._id,
+			admin: this.admin,
+		};
 	}
 
 	static setHashPassword(password: string): Promise<string> {
